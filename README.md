@@ -2,8 +2,6 @@
 
 A small modulare updater. The intention of this is to provide a very bare bones module that will allow people to redefine sections of it and have it all just work.
 
-## Use
-
 In order to start updating you have to initiate your modularUpdater.
 
 ### example of initialization modular updater
