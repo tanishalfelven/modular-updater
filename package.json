@@ -1,0 +1,23 @@
+{
+  "name": "modular-updater",
+  "version": "1.0.0",
+  "description": "",
+  "main": "modular-updater.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tanishalfelven/modular-updater.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tanishalfelven/modular-updater/issues"
+  },
+  "homepage": "https://github.com/tanishalfelven/modular-updater#readme",
+  "dependencies": {
+    "semver": "^5.5.0"
+  }
+}
