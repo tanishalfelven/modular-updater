@@ -11,7 +11,7 @@ In order to start updating you have to initiate your modularUpdater.
 const modularUpdater = require("modular-updater").create({
     downloader     : require("modular-updater/src/simple-url-downloader"),
     versionChecker : require("modular-updater/src/json-version-checker"),
-    installer      : require("modular-updater/src/zip-installer),
+    installer      : require("modular-updater/src/zip-installer"),
     
     tempDownloadPath   : "./",
     installDirectory   : "./app/"
