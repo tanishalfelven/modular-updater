@@ -20,7 +20,7 @@ module.exports = {
     create(config) {
         return {
             checkForUpdate : async ({ versionUrl, updateFileUrl, currentVersionInfo }) => {
-                const versionResponse = await config.downloader.getResponse(versionUrl);
+                const versionResponse = await config.downloader.getVersionData(versionUrl);
                 const updateAvailable = config.versionChecker.needToUpdate(currentVersionInfo, versionResponse);
                 
                 // Assume we want to update if an update is available
