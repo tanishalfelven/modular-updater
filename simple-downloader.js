@@ -1,1 +1,1 @@
-module.exports = require("src/simple-downloader.js");
+module.exports = require("./src/simple-downloader.js");

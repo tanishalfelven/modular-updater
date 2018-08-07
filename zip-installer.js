@@ -1,1 +1,1 @@
-module.exports = require("src/zip-installer.js");
+module.exports = require("./src/zip-installer.js");

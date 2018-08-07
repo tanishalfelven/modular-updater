@@ -36,7 +36,7 @@ module.exports = {
                 if (config.downloader.on) {
                     config.downloader.on(event, func);
                 }
-                if (config.verionChecker.on) {
+                if (config.versionChecker.on) {
                     config.versionChecker.on(event, func);
                 }
                 if (config.installer.on) {
