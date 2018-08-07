@@ -1,14 +1,14 @@
 # modular-updater
 
-A small modulare updater. The intention of this is to provide a very bare bones module that will allow people to redefine sections of it and have it all just work.
+A small modular updater. The intention of this is to provide a very bare bones module that will allow people to redefine sections of it and have it all just work.
 
 In order to start updating you have to initiate your modularUpdater.
 
-### example of initialization modular updater
+### Example Initialization
 ```js
 const modularUpdater = require("modular-updater").create({
-    downloader     : require("modular-updater/src/simple-url-downloader"),
-    versionChecker : require("modular-updater/src/json-version-checker"),
+    downloader     : require("modular-updater/src/simple-downloader"),
+    versionChecker : require("modular-updater/src/semver-checker"),
     installer      : require("modular-updater/src/zip-installer"),
     
     tempDownloadPath   : "./",

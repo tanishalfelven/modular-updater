@@ -1,11 +1,13 @@
+"strict mode";
+
 module.exports = {
     /**
      * @param {obj} config an object that has data required to checkForUpdate. 
      * The required portions are :
      *      downloader      : downloadFile(url)      => returns file path
-     *                      : getResponse(url)       => returns response from url
+     *                      : getVersionData(url)    => returns response from url
      *                      : on(event, func)        => register func as observer
-     *      versionChecker  : checkVersion(filePath) => returns boolean value
+     *      versionChecker  : needToUpdate(currentVersion, newVersion) => returns boolean
      *                      : on(event, func)        => register func as observer
      *      installer       : install(filePath)
      *                      : on(event, func)        => register func as observer
@@ -17,15 +19,15 @@ module.exports = {
      */
     create(config) {
         return {
-            checkForUpdate({ versionUrl, updateFileUrl, currentVersionInfo }) {
-                const versionResponse = config.downloader.getResponse(versionUrl);
-                const updateAvailable = config.versionChecker.checkVersion(currentVersionInfo, versionResponse);
+            checkForUpdate : async ({ versionUrl, updateFileUrl, currentVersionInfo }) => {
+                const versionResponse = await config.downloader.getResponse(versionUrl);
+                const updateAvailable = config.versionChecker.needToUpdate(currentVersionInfo, versionResponse);
                 
                 // Assume we want to update if an update is available
                 let installed = false;
                 if (updateAvailable) {
-                    const updateFilePath = config.downloader.downloadFile(updateFileUrl, config.tempDownloadPath);
-                    installed = config.installer.install(updateFilePath);
+                    await config.downloader.downloadFile(updateFileUrl, config.tempDownloadPath);
+                    installed = await config.installer.install(config.tempDownloadPath);
                 }
                 
                 return installed ? versionResponse : false;
@@ -42,5 +44,5 @@ module.exports = {
                 }
             }
         }
-    }
+    } 
 };

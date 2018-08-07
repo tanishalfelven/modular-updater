@@ -1,3 +1,5 @@
+"strict mode";
+
 module.exports = class Emitter {
     constructor() {
         this.Observers = [];
@@ -7,10 +9,10 @@ module.exports = class Emitter {
         this.Observers.push({event, func});
     }
 
-    emit(event) {
+    emit(event, ...args) {
         this.Observers.forEach((observer) => {
             if (observer.event === event) {
-                observer.func();
+                observer.func(...args);
             }
         });
     }
