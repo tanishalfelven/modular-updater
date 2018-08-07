@@ -19,18 +19,20 @@ module.exports = {
      */
     create(config) {
         return {
-            checkForUpdate : async ({ versionUrl, updateFileUrl, currentVersionInfo }) => {
-                const versionResponse = await config.downloader.getVersionData(versionUrl);
-                const updateAvailable = config.versionChecker.needToUpdate(currentVersionInfo, versionResponse);
-                
-                // Assume we want to update if an update is available
-                let installed = false;
-                if (updateAvailable) {
-                    await config.downloader.downloadFile(updateFileUrl, config.tempDownloadPath);
-                    installed = await config.installer.install(config.tempDownloadPath);
-                }
-                
-                return installed ? versionResponse : false;
+            checkForUpdate : ({ versionUrl, updateFileUrl, currentVersionInfo }) => {
+                return new Promise(async (response, reject) => {
+                    const versionResponse = await config.downloader.getVersionData(versionUrl);
+                    const updateAvailable = config.versionChecker.needToUpdate(currentVersionInfo, versionResponse);
+                    
+                    // Assume we want to update if an update is available
+                    let installed = false;
+                    if (updateAvailable) {
+                        await config.downloader.downloadFile(updateFileUrl, config.tempDownloadPath);
+                        installed = await config.installer.install(config.tempDownloadPath);
+                        response(versionResponse);
+                    }
+                    response(false);
+                });
             },
             on(event, func) {
                 if (config.downloader.on) {

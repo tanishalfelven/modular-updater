@@ -13,6 +13,6 @@ module.exports = class SemverChecker extends require("./emitter") {
         }
 
         return versionNumberIsUpdated(oldVersionData.version, newVersionData.version) 
-            && oldVersionData.sha !== newVersionData.sha;
+            && oldVersionData.sha512 !== newVersionData.sha512;
     }
 }
