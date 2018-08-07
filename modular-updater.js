@@ -28,7 +28,7 @@ module.exports = {
                     let installed = false;
                     if (updateAvailable) {
                         await config.downloader.downloadFile(updateFileUrl, config.tempDownloadPath);
-                        installed = await config.installer.install(config.tempDownloadPath);
+                        installed = await config.installer.install(config.tempDownloadPath, config.installDirectory);
                         response(versionResponse);
                     }
                     response(false);
