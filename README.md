@@ -1,49 +1,45 @@
 # modular-updater
 
-A small modular updater. The intention of this is to provide a very bare bones module that will allow people to redefine sections of it and have it all just work.
+A small modular updater. Some main focuses are simplicity, ease of use, and ease to integrate new processes with it.
 
-In order to start updating you have to initiate your modularUpdater.
+# updating
 
-### Example Initialization
+modular-updater works as a configured object they you must initiall configure, which you then have a fine-tuned control over the installation process.
+
+To create an updater, `require` then call `.create()`. The only support options so far are defined below.
+
 ```js
 const modularUpdater = require("modular-updater").create({
-    downloader     : require("modular-updater/src/simple-downloader"),
-    versionChecker : require("modular-updater/src/semver-checker"),
-    installer      : require("modular-updater/src/zip-installer"),
+    downloader     : new (require("modular-updater/simple-downloader"))(),
+    versionChecker : new (require("modular-updater/semver-checker"))(),
+    installer      : new (require("modular-updater/zip-installer"))(),
     
-    tempDownloadPath   : "./",
+    tempDownloadPath   : "./temp.zip",
     installDirectory   : "./app/"
 });
 ```
+`checkForUpdate` will trigger the update process. The `versionUrl` and `updateFileUrl` are sent as paramters so a single updater object can support installation of the same app from multiple places or for multiple platforms.
 
-Then to start an update you just have to call `checkForUpdate` like so with all of the needed data.
 ```js
-modularUpdater.checkForUpdate({
-    versionUrl    : "//www.lmao.com/some/version.json",
-    updateFileUrl : "//www.lmao.com/some/updateFile.zip",
+const newVersionData = await modularUpdater.checkForUpdate({
+    versionUrl    : "//some.url.to/some/config.yml",
+    updateFileUrl : "//some.url.to/some/version.zip",
     // this needs to be saved off. It isn't provided, then 
     // it will always download and install
     currentVersionInfo : {
-        version : "0.0.1" // some valid semver
+        version : "0.0.0",   // some valid semver
         sha512  : 2403987652 // pretend this is some valid sha512 or some needed data for your versionChecker
     }
 });
 ```
 
-## Events
+# events
 
-All of the out of the box modular sections provided (json-version-checker.js, simple-url-downloader.js, zip-installer.js) are able to be hooked into events.
-There is safe checking for events, so if your module doesn't support them then there won't be issues. Check out emitter.js to see a simple observer implementation.
+Out of the box the following events are supported `download-progress`, `download-completed`, and `install-progress`.
 
-### Hooking in
-
-To hook into `modularUpdater` events use `.on`.
-
-#### EX 
-
-This will hook into an event `"download-progress"` and will register it to EACH portion of the updater (updater, installer, and versionChecker) so be careful to not define overlapping events.
 ```js
-modularUpdater.on("download-progress", (evtInfo) => {
-    console.log(evtInfo);
-})
+modularUpdater.on("install-progress", (data) => {
+    console.log("installing");
+    console.log(data);
+});
 ```
