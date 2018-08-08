@@ -20,6 +20,8 @@ const modularUpdater = require("modular-updater").create({
 ```
 `checkForUpdate` will trigger the update process. The `versionUrl` and `updateFileUrl` are sent as paramters so a single updater object can support installation of the same app from multiple places or for multiple platforms.
 
+Version checking is currently handled, although storage of version data is up to your own implementation. Send the version data along in `checkForUpdate` and it will be compared and skipped over if there is new version.
+
 ```js
 const newVersionData = await modularUpdater.checkForUpdate({
     versionUrl    : "//some.url.to/some/config.yml",
