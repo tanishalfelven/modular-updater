@@ -4,9 +4,9 @@ A small modular updater. Some main focuses are simplicity, ease of use, and ease
 
 # updating
 
-modular-updater works as a configured object they you must initiall configure, which you then have a fine-tuned control over the installation process.
+modular-updater works as a configured object they you must initially configure, which you then have a fine-tuned control over the installation process.
 
-To create an updater, `require` then call `.create()`. The only support options so far are defined below.
+To create an updater, `require` then call `.create()`. The only supported options so far are defined below.
 
 ```js
 const modularUpdater = require("modular-updater").create({
