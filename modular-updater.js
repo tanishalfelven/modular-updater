@@ -19,9 +19,10 @@ module.exports = {
      */
     create(config) {
         return {
-            checkForUpdate({ versionUrl, currentVersionInfo }) {
+            checkForUpdate({ versionUrl, currentVersionInfo, versionResponse = false }) {
                 return new Promise(async (response, reject) => {
-                    const versionResponse = await config.downloader.getVersionData(versionUrl);
+                    // if versionResponse was sent in, use that, otherwise reach out for it
+                    versionResponse = versionResponse ? versionResponse : await config.downloader.getVersionData(versionUrl);
 
                     response(config.versionChecker.needToUpdate(currentVersionInfo, versionResponse));
                 });
@@ -29,10 +30,13 @@ module.exports = {
             update({ versionUrl, updateFileUrl, currentVersionInfo }) {
                 const _this = this;
                 return new Promise(async (response, reject) => {
-                    const updateAvailable = _this.checkForUpdate({ versionUrl, currentVersionInfo });
+                    const versionResponse = await config.downloader.getVersionData(versionUrl);
+
+                    const updateAvailable = _this.checkForUpdate({
+                        currentVersionInfo, 
+                        versionResponse
+                    });
                     
-                    // Assume we want to update if an update is available
-                    let installed = false;
                     if (updateAvailable) {
                         await config.downloader.downloadFile(updateFileUrl, config.tempDownloadPath);
                         installed = await config.installer.install(config.tempDownloadPath, config.installDirectory);
