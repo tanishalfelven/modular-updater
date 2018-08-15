@@ -36,7 +36,10 @@ module.exports = class ZipInstaller extends require("./emitter") {
         });
     
         return new Promise((resolve) => {
-            zipfile.once("close", resolve);
+            zipfile.once("close", () => {
+                fs.unlinkSync(updateFilePath);
+                resolve();
+            });
         });
     }
 }
