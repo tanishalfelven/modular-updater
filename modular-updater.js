@@ -19,32 +19,26 @@ module.exports = {
      */
     create(config) {
         return {
-            checkForUpdate({ versionUrl, currentVersionInfo, versionResponse = false }) {
-                return new Promise(async (response, reject) => {
-                    // if versionResponse was sent in, use that, otherwise reach out for it
-                    versionResponse = versionResponse ? versionResponse : await config.downloader.getVersionData(versionUrl);
+            async checkForUpdate({ versionUrl, currentVersionInfo, versionResponse = false }) {
+                // if versionResponse was sent in, use that, otherwise reach out for it
+                versionResponse = versionResponse ? versionResponse : await config.downloader.getVersionData(versionUrl);
 
-                    response(config.versionChecker.needToUpdate(currentVersionInfo, versionResponse));
-                });
+                return config.versionChecker.needToUpdate(currentVersionInfo, versionResponse);
             },
-            update({ versionUrl, updateFileUrl, currentVersionInfo }) {
-                const _this = this;
-                return new Promise(async (response, reject) => {
-                    const versionResponse = await config.downloader.getVersionData(versionUrl);
 
-                    const updateAvailable = _this.checkForUpdate({
-                        currentVersionInfo, 
-                        versionResponse
-                    });
-                    
-                    if (updateAvailable) {
-                        await config.downloader.downloadFile(updateFileUrl, config.tempDownloadPath);
-                        installed = await config.installer.install(config.tempDownloadPath, config.installDirectory);
-                        response(versionResponse);
-                    }
-                    response(false);
-                });
+            async update({ versionUrl, updateFileUrl, currentVersionInfo }) {
+                const versionResponse = await config.downloader.getVersionData(versionUrl);
+
+                const updateAvailable = this.checkForUpdate({currentVersionInfo, versionResponse});
+                
+                if (updateAvailable) {
+                    await config.downloader.downloadFile(updateFileUrl, config.tempDownloadPath);
+                    installed = await config.installer.install(config.tempDownloadPath, config.installDirectory);
+                    return versionResponse;
+                }
+                return false;
             },
+
             on(event, func) {
                 if (config.downloader.on) {
                     config.downloader.on(event, func);
