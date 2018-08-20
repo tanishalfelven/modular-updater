@@ -1,3 +1,4 @@
+const Emitter = require("./emitter");
 /**
  * This is a simple version checker. It is non-standard and is used for parsing
  * versions setup similar to https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assembly-versioning
@@ -104,7 +105,7 @@ function isUpdate(currentVersion, newVersion) {
     return compareVersion(currentVersion.version, newVersion.version) === 1;
 }
 
-module.exports = {
+module.exports = class SemverChecker extends Emitter {
     needToUpdate(currentVersion, newVersion) {
         return isUpdate(currentVersion, newVersion) && oldVersionData.sha512 !== newVersionData.sha512;
     }
