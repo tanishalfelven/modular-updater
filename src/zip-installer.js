@@ -4,8 +4,9 @@ const fs                 = require("fs-extra");
 const path               = require("path");
 const { promisify }      = require("util");
 const yauzl              = require("yauzl");
+const Emitter            = require("./emitter");
 
-module.exports = class ZipInstaller extends require("./emitter") {
+module.exports = class ZipInstaller extends Emitter {
     async install(updateFilePath, installDir) {
         const openZip        = promisify(yauzl.open);
         const zipfile        = await openZip(updateFilePath);

@@ -4,8 +4,9 @@ const request  = require("request");
 const progress = require("request-progress");
 const yaml     = require("node-yaml");
 const path     = require("path");
+const Emitter  = require("./emitter");
 
-module.exports = class UrlDownloader extends require("./emitter") {
+module.exports = class UrlDownloader extends Emitter {
     /**
      * Very simply downloads file directly to path
      * @param {string} url 

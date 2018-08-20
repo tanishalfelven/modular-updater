@@ -1,3 +1,4 @@
+"strict mode";
 const Emitter = require("./emitter");
 /**
  * This is a simple version checker. It is non-standard and is used for parsing
